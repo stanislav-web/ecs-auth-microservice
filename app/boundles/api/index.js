@@ -1,6 +1,7 @@
 const logger = require('koa-logger');
 const jwt = require('koa-jwt');
 const error = require('koa-json-error');
+const config = require('./config');
 const {routes, allowedMethods} = require('./users/routes');
 
 /**
@@ -19,7 +20,4 @@ module.exports =  (app) => {
     app.use(allowedMethods());
     app.use(routes());
     app.use(logger());
-//    app.use(jwt({
-//        secret: 'WvtoFkWGifBVeJGSN4Ot'
-//    }));
 };

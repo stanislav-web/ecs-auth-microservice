@@ -1,12 +1,22 @@
 const router = require('koa-router')();
 const body = require('koa-body');
+const {registerUser, getAuthUser} = require('./controller');
+
+/**
+ * Get auth user
+ *
+ * @section User REST API
+ * @type get
+ * @url /user
+ */
+router.get('/user', getAuthUser);
 
 /**
  * Get user by id
  *
  * @section User REST API
  * @type get
- * @url /users/:id
+ * @url /user/:id
  * @param {int} id
  */
 router.get('/user/:id', async (ctx, next) => {
@@ -22,10 +32,7 @@ router.get('/user/:id', async (ctx, next) => {
  * @url /users
  * @param {string} body
  */
-router.post('/user', async (ctx, next) => {
-    ctx.body = 'Hello, /user';
-    await next();
-});
+router.post('/user', body(), registerUser);
 
 /**
  * Update user
