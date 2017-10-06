@@ -1,0 +1,11 @@
+# Logs
+npm-debug.log
+
+# Dependency directories
+node_modules/
+mochawesome-report/
+
+# User-specific stuff:
+.idea/
+/coverage
+/clean.sh

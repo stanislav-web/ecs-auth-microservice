@@ -1,0 +1,57 @@
+{
+  "name": "exchanger",
+  "version": "0.0.1",
+  "description": "exchanger",
+  "keywords": [],
+  "author": {
+    "name": "Stanislav WEB",
+    "email": "stanisov@gmail.com",
+    "url": "https://bitbucket.org/stanislav-web"
+  },
+  "homepage": "https://bitbucket.org/stanislav-web/exchanger",
+  "bugs": {
+    "url": "https://bitbucket.org/stanislav-web/exchanger/issues",
+    "email": "stanisov@gmail.com"
+  },
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/stanislav-web/exchanger.git"
+  },
+  "scripts": {
+    "start": "node --harmony server.js",
+    "dev": "nodemon -r dotenv/config --harmony server.js",
+    "pretest": "eslint --fix modules/**",
+    "test": "mocha --timeout 2000 -r should --reporter mochawesome ./tests",
+    "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./tests/* -r should --timeout 2000",
+    "prepublishOnly": "mocha --timeout 2000 -r should ./tests"
+  },
+  "main": "server.js",
+  "engines": {
+    "node": ">=8.3.x",
+    "npm": ">=5.x"
+  },
+  "dependencies": {
+    "koa": "^2.3.0",
+    "koa-body": "^2.5.0",
+    "koa-json": "^2.0.2",
+    "koa-jwt": "^3.2.2",
+    "koa-logger": "^3.1.0",
+    "koa-route": "^3.2.0",
+    "mongodb": "^2.2.31",
+    "nock": "^9.0.22",
+    "ws": "^3.2.0"
+  },
+  "devDependencies": {
+    "chakram": "^1.5.0",
+    "coveralls": "^3.0.0",
+    "dotenv": "^4.0.0",
+    "eslint": "^4.8.0",
+    "eslint-plugin-async-await": "0.0.0",
+    "istanbul": "^0.4.5",
+    "jscoverage": "^0.6.0",
+    "mocha": "^3.5.3",
+    "mochawesome": "^2.3.1",
+    "nodemon": "^1.12.1"
+  }
+}
