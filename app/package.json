@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node --harmony server.js",
     "dev": "nodemon -r dotenv/config --harmony server.js",
-    "pretest": "eslint --fix modules/**",
+    "pretest": "eslint --fix modules/** server.js",
     "test": "mocha --timeout 2000 -r should --reporter mochawesome ./tests",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./tests/* -r should --timeout 2000",
     "prepublishOnly": "mocha --timeout 2000 -r should ./tests"
@@ -52,6 +52,7 @@
     "jscoverage": "^0.6.0",
     "mocha": "^3.5.3",
     "mochawesome": "^2.3.1",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "winston": "^2.4.0"
   }
 }

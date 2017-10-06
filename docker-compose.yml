@@ -1,0 +1,19 @@
+nginx:
+    build: .
+    dockerfile: Dockerfile.nginx
+    links:
+        - app
+    ports:
+        - "80:80"
+app:
+    build: .
+    dockerfile: Dockerfile.node
+    links:
+        - db
+    ports:
+        - "8080:8080"
+db:
+    build: .
+    dockerfile: Dockerfile.mongo
+    ports:
+        - "27017:27017"
