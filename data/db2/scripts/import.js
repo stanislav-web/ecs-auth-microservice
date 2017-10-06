@@ -3,11 +3,8 @@ db.createUser({
     pwd: 'password',
     roles: [ {
         role: 'readWrite',
-        db: 'test'
+        db: 'access'
     }]
 });
-
-db.user.save({
-    login: 'admin',
-    password: 'password'
-});
+db.createCollection('access');
+db.access.ensureIndex({email:1},{unique:true});

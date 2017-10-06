@@ -21,7 +21,8 @@
   "scripts": {
     "start": "node --harmony server.js",
     "dev": "nodemon -r dotenv/config --harmony server.js",
-    "pretest": "eslint --fix modules/** server.js",
+    "doc": "apidoc -i boundles/api/_spec/ -o docs/api",
+    "pretest": "eslint --fix boundles/** server.js",
     "test": "mocha --timeout 2000 -r should --reporter mochawesome ./tests",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./tests/* -r should --timeout 2000",
     "prepublishOnly": "mocha --timeout 2000 -r should ./tests"
@@ -31,16 +32,23 @@
     "node": ">=8.3.x",
     "npm": ">=5.x"
   },
+  "apidoc": {
+    "title": "API Boundle",
+    "description": "Documentation for API Boundle of Exchanger",
+    "url": "https://localhost"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "es6-promisify": "^5.0.0",
+    "http-status-codes": "^1.3.0",
+    "joi": "^11.1.1",
     "jsonwebtoken": "^8.0.1",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
     "koa-json-error": "^3.1.2",
     "koa-logger": "^3.1.0",
     "koa-router": "^7.2.1",
-    "mongodb": "^2.2.31",
-    "ws": "^3.2.0"
+    "mongodb": "^2.2.31"
   },
   "devDependencies": {
     "chakram": "^1.5.0",

@@ -17,7 +17,6 @@ const server = http.createServer(app.callback())
         applogger.info('Server shutdown.');
     });
 
-
 /**
  * Shutdown server event
  */

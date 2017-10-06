@@ -1,8 +1,5 @@
 const logger = require('koa-logger');
-const jwt = require('koa-jwt');
-const error = require('koa-json-error');
-const config = require('./config');
-const {routes, allowedMethods} = require('./users/routes');
+const error = require('./error');
 
 /**
  * Export API boundle
@@ -11,13 +8,7 @@ const {routes, allowedMethods} = require('./users/routes');
  */
 module.exports =  (app) => {
 
-    app.use(error((err) => {
-        return {
-            status: err.status,
-            message: err.message,
-        };
-    }));
-    app.use(allowedMethods());
-    app.use(routes());
+    app.use(error);
+    app.use(require('./access/routes'));
     app.use(logger());
 };
