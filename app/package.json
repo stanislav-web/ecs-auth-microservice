@@ -32,12 +32,13 @@
     "npm": ">=5.x"
   },
   "dependencies": {
+    "kcors": "^2.2.1",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
-    "koa-json": "^2.0.2",
+    "koa-json-error": "^3.1.2",
     "koa-jwt": "^3.2.2",
     "koa-logger": "^3.1.0",
-    "koa-route": "^3.2.0",
+    "koa-router": "^7.2.1",
     "mongodb": "^2.2.31",
     "nock": "^9.0.22",
     "ws": "^3.2.0"

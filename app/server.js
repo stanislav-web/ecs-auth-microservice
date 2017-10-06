@@ -1,8 +1,7 @@
 const http = require('http');
 const koa = require('koa');
-const json = require('koa-json');
 const applogger = require('./logger');
-const logger = require('koa-logger');
+const api = require('./boundles/api');
 const app = new koa();
 
 /**
@@ -38,5 +37,4 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
-app.use(logger());
-app.use(json);
+api(app);
