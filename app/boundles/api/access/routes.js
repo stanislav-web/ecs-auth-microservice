@@ -1,13 +1,16 @@
 const router = require('koa-router')();
 const body = require('koa-body');
-const {signupUser, signinUser} = require('./controller');
+const {signupUser, signinUser, verifyUser} = require('./controller');
 
+//noinspection Annotator,Annotator
 /**
  * @api {post} /access/signup Register new user
  * @apiName Registration
  * @apiGroup Access API Boundle
  * @apiDescription Register new user
  * @apiPermission user
+ * @apiParam {String} name          User name
+ * @apiParam {String} phone         User phone
  * @apiParam {String} email         User email
  * @apiParam {String} password      User password
  *
@@ -24,13 +27,13 @@ const {signupUser, signinUser} = require('./controller');
  *          }
  *      }
  *
- * @apiError InvalidRequestError Bad credentials
+ * @apiError BadRequestError Bad credentials
  *
- * @apiErrorExample InvalidRequestError
+ * @apiErrorExample BadRequestError
  *     HTTP/1.1 400 Bad Request
  *     {
  *          "status": 400,
- *          "message": "InvalidRequest: child "email" fails because ["email" must be a valid email]"
+ *          "message": "child "email" fails because ["email" must be a valid email]"
  *      }
  *
  * @apiError ConflictRequestError The user already exist
@@ -39,11 +42,12 @@ const {signupUser, signinUser} = require('./controller');
  *     HTTP/1.1 409 Conflict
  *     {
  *          "status": 409,
- *          "message": "ConflictRequest: The user already exist"
+ *          "message": "The user already exist"
  *      }
  */
 router.post('/access/signup', body(), signupUser);
 
+//noinspection Annotator,Annotator
 /**
  * @api {post} /access/signin Authorize user by credentials
  * @apiName Authorization
@@ -66,13 +70,13 @@ router.post('/access/signup', body(), signupUser);
  *          }
  *      }
  *
- * @apiError InvalidRequestError Invalid auth credentials
+ * @apiError BadRequestError Invalid auth credentials
  *
- * @apiErrorExample InvalidRequestError
+ * @apiErrorExample BadRequestError
  *     HTTP/1.1 400 Bad Request
  *     {
  *          "status": 400,
- *          "message": "InvalidRequest: child "email" fails because ["email" must be a valid email]"
+ *          "message": "child "email" fails because ["email" must be a valid email]"
  *      }
  *
  * @apiError NotFoundError User not found
@@ -81,7 +85,7 @@ router.post('/access/signup', body(), signupUser);
  *     HTTP/1.1 404 Not Found
  *     {
  *          "status": 404,
- *          "message": "NotFound: User not found"
+ *          "message": "User not found"
  *      }
  *
  * @apiError AccessForbiddenError Invalid auth credentials
@@ -90,15 +94,60 @@ router.post('/access/signup', body(), signupUser);
  *     HTTP/1.1 403 Forbidden
  *     {
  *          "status": 403,
- *          "message": "AccessForbidden: Invalid credentials"
+ *          "message": "Invalid credentials"
  *      }
  */
 router.post('/access/signin', body(), signinUser);
 
+//noinspection Annotator,Annotator
+/**
+ * @api {post,get} /access/verify Verify access token
+ * @apiName Verification
+ * @apiGroup Access API Boundle
+ * @apiDescription Verify access token
+ * @apiPermission user
+ * @apiParam {String} token         User token
+ *
+ * @apiSuccess {Number} status HTTP 200 OK
+ * @apiSuccess {Object[]} message  Authentication message
+ *
+ * @apiSuccessExample Success-Response
+ *     HTTP/1.1 200 OK
+ *     {
+ *          "status": 200,
+ *          "message": {
+ *              "email": "stanisov@gmail.com",
+ *              "iat": 1507436214,
+ *              "exp": 1507436274
+ *          }
+ *      }
+ *
+ * @apiError BadRequestError No token specified
+ *
+ * @apiErrorExample BadRequestError
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *          "status": 400,
+ *          "message": "No token specified"
+ *      }
+ *
+ * @apiError AccessForbiddenError Invalid or expires token
+ *
+ * @apiErrorExample AccessForbiddenError
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *          "status": 403,
+ *          "message": "Invalid or expires token"
+ *      }
+ */
+router.all('/access/verify/:token?', body(), verifyUser);
+
+//noinspection Annotator,Annotator
 router.allowedMethods({
     throw: true
 });
 
+//noinspection Annotator,Annotator
 /**
  * Export modules to -> server to use as middleware
  */

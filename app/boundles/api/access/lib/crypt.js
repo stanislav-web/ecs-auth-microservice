@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 
 /**
- * AsyncBcrypt.genSalt
+ * bcrypt.genSalt
  *
  * @param rounds
  * @param seedLength
@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs');
  */
 const genSalt = (rounds, seedLength) => {
     return new Promise((resolve, reject) => {
+        //noinspection JSIgnoredPromiseFromCall
         bcrypt.genSalt(rounds, seedLength, (err, salt) => {
             if (err) {
                 reject(err);
@@ -19,7 +20,7 @@ const genSalt = (rounds, seedLength) => {
 };
 
 /**
- * AsyncBcrypt.hash
+ * bcrypt.hash
  *
  * @param str
  * @param salt
@@ -27,6 +28,7 @@ const genSalt = (rounds, seedLength) => {
  */
 const hash = async (str, salt) => {
     return new Promise((resolve, reject) => {
+        //noinspection JSIgnoredPromiseFromCall
         bcrypt.hash(str, salt, (err, hashed) => {
             if (err) {
                 reject(err);
@@ -37,7 +39,7 @@ const hash = async (str, salt) => {
 };
 
 /**
- * AsyncBcrypt.compare
+ * bcrypt.compare
  *
  * @param str
  * @param hash
@@ -45,6 +47,7 @@ const hash = async (str, salt) => {
  */
 const compare = (str, hash) => {
     return new Promise((resolve, reject) => {
+        //noinspection JSIgnoredPromiseFromCall
         bcrypt.compare(str, hash, (err, result) => {
             if (err) {
                 reject(err);
@@ -54,4 +57,8 @@ const compare = (str, hash) => {
     });
 };
 
+/**
+ *
+ * @type {{genSalt: (function(*=, *=)), hash: (function(*=, *=)), compare: (function(*=, *=))}}
+ */
 module.exports = {genSalt, hash, compare};

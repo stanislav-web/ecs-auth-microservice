@@ -9,7 +9,6 @@ Represents high scalable architecture for "NodeJS" applications in the form of b
 ![NodeJS](http://bogdanov-blog.ru/wp-content/themes/blogus/img/types/nodejs.png) &rightarrow;
 ![MongoDb](https://download.asperasoft.com/download/docs/orchestrator/2.6.1/user_win/webhelp/images/plugin_MongodbOperation.png)
 
-
 #### IMPLEMENTS
  - Scalable boundles
  - Koa2

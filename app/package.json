@@ -50,7 +50,8 @@
     "koa-logger": "^3.1.0",
     "koa-router": "^7.2.1",
     "koa2-static-files": "^1.0.4",
-    "mongodb": "^2.2.31"
+    "mongodb": "^2.2.31",
+    "should": "^13.1.1"
   },
   "devDependencies": {
     "chakram": "^1.5.0",

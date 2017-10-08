@@ -1,67 +1,59 @@
-const jwt = require('jsonwebtoken');
-const {hash, compare} = require('./lib/crypt');
+const {compare} = require('./lib/crypt');
+const {createRecordObject, generateTokenObject, verifyTokenObject} = require('./lib/scheme');
 const HttpStatus = require('http-status-codes');
-const {saveUser, updateUser, findUserById, findUserByEmail} = require('./mapper');
-const {InvalidRequestError, ConflictRequestError, NotFoundError, AccessForbiddenError, DbError, ApiBoundleError} = require('./exception');
-const Joi = require('joi');
+const {saveUser, updateUser, findUserByEmail} = require('./mapper');
+const {ApiBoundleError} = require('./exception');
+const joi = require('joi');
 
 /**
  * Register new user
  *
  * @param ctx
  * @param next
- * @throws ConflictRequestError
- * @throws InvalidRequestError
+ * @throws ApiBoundleError
  * @returns {Promise.<void>}
  */
 const signupUser = async (ctx, next) => {
 
-    const schema = Joi.object().keys({
-        email: Joi.string().email(),
-        password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+    //noinspection Annotator,Annotator,Annotator,Annotator,Annotator
+    const schema = joi.object().keys({
+        name: joi.string().required().min(3),
+        phone: joi.string().required().min(5),
+        email: joi.string().required().email(),
+        password: joi.string().required().min(3).regex(/^[a-zA-Z0-9]{3,30}$/),
     });
 
-    let res = Joi.validate(ctx.request.body, schema);
+    //noinspection Annotator
+    let res = joi.validate(ctx.request.body, schema);
 
-    try {
+    if (null === res.error) {
+        let user = await findUserByEmail(res.value.email);
+        if (0 >= user.length) {
 
-        if (res.error === null) {
-            let user = await findUserByEmail(res.value.email);
-            if (user.length <= 0) {
+            try {
 
-                res.value.expires_in = Math.floor(Date.now() / 1000) + (process.env.TOKEN_EXPIRES * 60);
-                res.value.token = jwt.sign(res.value, process.env.TOKEN_SECRET, {
-                    expiresIn: res.value.expires_in
-                });
+                let recordObject = await createRecordObject(res.value);
+                await saveUser(recordObject);
+                let tokenObject = await generateTokenObject(res.value);
 
-                res.value.password = await hash(res.value.password.trim(), 10);
-                let last = await saveUser(res.value);
-                let response = await findUserById(last.insertedId);
                 ctx.body = {
                     status: 200,
-                    message: response.shift()
+                    message: {
+                        expires_in: tokenObject.expires_in,
+                        token: tokenObject.token
+                    }
                 };
-            } else {
-                throw new ConflictRequestError('The user already exist');
+            } catch (err) {
+                throw new ApiBoundleError(
+                    HttpStatus.SERVICE_UNAVAILABLE, err);
             }
         } else {
-            throw new InvalidRequestError(res.error.message);
+            throw new ApiBoundleError(
+                HttpStatus.CONFLICT, 'The user already exist');
         }
-    } catch (err) {
-
-        if (err instanceof DbError) {
-            let message = HttpStatus.getStatusText(HttpStatus.SERVICE_UNAVAILABLE);
-            throw new ApiBoundleError(
-                HttpStatus.SERVICE_UNAVAILABLE, message);
-        } else if (err instanceof ConflictRequestError) {
-            throw new ApiBoundleError(
-                HttpStatus.CONFLICT, err.toString()
-            );
-        } else if (err instanceof InvalidRequestError) {
-            throw new ApiBoundleError(
-                HttpStatus.BAD_REQUEST, err.toString()
-            );
-        }
+    } else {
+        throw new ApiBoundleError(
+            HttpStatus.BAD_REQUEST, res.error.message);
     }
 
     await next();
@@ -72,119 +64,101 @@ const signupUser = async (ctx, next) => {
  *
  * @param ctx
  * @param next
- * @throws DbError
- * @throws AccessForbiddenError
- * @throws NotFoundError
- * @throws InvalidRequestError
+ * @throws ApiBoundleError
  * @returns {Promise.<void>}
  */
 const signinUser = async (ctx, next) => {
 
-    const schema = Joi.object().keys({
-        email: Joi.string().email(),
-        password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+    //noinspection Annotator,Annotator,Annotator
+    const schema = joi.object().keys({
+        email: joi.string().email(),
+        password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
     });
 
-    let res = Joi.validate(ctx.request.body, schema);
+    //noinspection Annotator
+    let res = joi.validate(ctx.request.body, schema);
 
-    try {
+    if (null === res.error) {
 
-        if (res.error === null) {
+        let user = await findUserByEmail(res.value.email, {_id: true, password: true});
+        if (0 < user.length) {
+            let dbuser = user.shift();
+            let isAuth = await compare(res.value.password.trim(), dbuser.password);
+            if (isAuth) {
+                let obj = await generateTokenObject(res.value);
 
-            let user = await findUserByEmail(res.value.email, {_id: true, password: true});
-            if (user.length > 0) {
-                let dbuser = user.shift();
-                let isAuth = await compare(res.value.password.trim(), dbuser.password);
-                if (isAuth) {
-                    // generate new token
-                    res.value.expires_in = Math.floor(Date.now() / 1000) + (process.env.TOKEN_EXPIRES * 60);
-                    res.value.token = jwt.sign(res.value, process.env.TOKEN_SECRET, {
-                        expiresIn: res.value.expires_in
-                    });
-                    let last = await updateUser(dbuser._id, {token: res.value.token, expires_in: res.value.expires_in});
-                    if (last.result.nModified > 0) {
-                        ctx.body = {
-                            status: 200,
-                            message: {
-                                expires_in: res.value.expires_in,
-                                token: res.value.token
-                            }
-                        };
-                    } else {
-                        throw new DbError('Service unavailable');
-                    }
-                } else {
-                    throw new AccessForbiddenError('Invalid credentials');
+                try {
+                    await updateUser(dbuser._id, {modified_at: new Date()});
+                    ctx.body = {
+                        status: 200,
+                        message: {
+                            expires_in: obj.expires_in,
+                            token: obj.token
+                        }
+                    };
+                } catch (err) {
+                    throw new ApiBoundleError(
+                        HttpStatus.SERVICE_UNAVAILABLE, err
+                    );
                 }
             } else {
-                throw new NotFoundError('User not found');
+                throw new ApiBoundleError(
+                    HttpStatus.FORBIDDEN, 'Invalid credentials'
+                );
             }
         } else {
-            throw new InvalidRequestError(res.error.message);
-        }
-    } catch (err) {
-
-        if (err instanceof DbError) {
-            let message = HttpStatus.getStatusText(HttpStatus.SERVICE_UNAVAILABLE);
             throw new ApiBoundleError(
-                HttpStatus.SERVICE_UNAVAILABLE, message
-            );
-        } else if (err instanceof AccessForbiddenError) {
-            throw new ApiBoundleError(
-                HttpStatus.FORBIDDEN, err.toString()
-            );
-        } else if (err instanceof NotFoundError) {
-            throw new ApiBoundleError(
-                HttpStatus.NOT_FOUND, err.toString()
-            );
-        } else if (err instanceof InvalidRequestError) {
-            throw new ApiBoundleError(
-                HttpStatus.BAD_REQUEST, err.toString()
+                HttpStatus.NOT_FOUND, 'User not found'
             );
         }
+    } else {
+        throw new ApiBoundleError(
+            HttpStatus.BAD_REQUEST, res.error.message
+        );
     }
 
     await next();
 };
 
 /**
- * Get auth user
+ * Verify user token
  *
  * @param ctx
  * @param next
+ * @throws ApiBoundleError
  * @returns {Promise.<void>}
  */
-const authUser = async (ctx, next) => {
+const verifyUser = async (ctx, next) => {
 
-    const token = ctx.request.header['x-access-token'] || ctx.request.body.token;
-    console.log(token);
+    const token = ctx.request.header['x-access-token'] || ctx.request.body.token || ctx.params.token;
+    if (token) {
+        try {
+            const verifyObject = await verifyTokenObject(token);
+            ctx.body = {
+                status: 200,
+                message: {
+                    email: verifyObject.email,
+                    iat: verifyObject.iat,
+                    exp: verifyObject.exp
+                }
+            };
+        } catch (err) {
+            throw new ApiBoundleError(
+                HttpStatus.FORBIDDEN, 'Invalid or expires token'
+            );
+        }
+    } else {
+        throw new ApiBoundleError(
+            HttpStatus.BAD_REQUEST, 'No token specified'
+        );
+    }
+
     await next();
 };
 
-// Load hash from your password DB.
-//bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
-//    // res == true
-//});
-
 /**
+ * Controller actions
  *
- * @type {{signupUser: (function(*, *)), authUser: (function(*, *))}}
+ * @type {{signupUser: (function(*, *)), signinUser: (function(*, *)), verifyUser: (function(*, *))}}
  */
-
-
-//    const token = ctx.request.header['x-access-token'];
-//    if (token) {
-//        jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-//            if (!err) {
-//                ctx.body = {
-//                    status: 200,
-//                    message: {auth: true, token: decoded}
-//                };
-//            }
-//        });
-//    }
-//
-//    await next();
-//};
-
-module.exports = {signupUser, signinUser};
+module.exports = {signupUser, signinUser, verifyUser};

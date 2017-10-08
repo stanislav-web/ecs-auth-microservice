@@ -127,6 +127,20 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "name",
+            "description": "<p>User name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>User phone</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Email",
+            "optional": false,
             "field": "email",
             "description": "<p>User email</p>"
           },
