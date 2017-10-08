@@ -64,7 +64,7 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "InvalidRequestError",
+            "field": "BadRequestError",
             "description": "<p>Invalid auth credentials</p>"
           },
           {
@@ -83,18 +83,18 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "InvalidRequestError",
-          "content": "HTTP/1.1 400 Bad Request\n{\n     \"status\": 400,\n     \"message\": \"InvalidRequest: child \"email\" fails because [\"email\" must be a valid email]\"\n }",
+          "title": "BadRequestError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n     \"status\": 400,\n     \"message\": \"child \"email\" fails because [\"email\" must be a valid email]\"\n }",
           "type": "json"
         },
         {
           "title": "NotFoundError",
-          "content": "HTTP/1.1 404 Not Found\n{\n     \"status\": 404,\n     \"message\": \"NotFound: User not found\"\n }",
+          "content": "HTTP/1.1 404 Not Found\n{\n     \"status\": 404,\n     \"message\": \"User not found\"\n }",
           "type": "json"
         },
         {
           "title": "AccessForbiddenError",
-          "content": "HTTP/1.1 403 Forbidden\n{\n     \"status\": 403,\n     \"message\": \"AccessForbidden: Invalid credentials\"\n }",
+          "content": "HTTP/1.1 403 Forbidden\n{\n     \"status\": 403,\n     \"message\": \"Invalid credentials\"\n }",
           "type": "json"
         }
       ]
@@ -139,7 +139,7 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Email",
+            "type": "String",
             "optional": false,
             "field": "email",
             "description": "<p>User email</p>"
@@ -187,7 +187,7 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "InvalidRequestError",
+            "field": "BadRequestError",
             "description": "<p>Bad credentials</p>"
           },
           {
@@ -200,13 +200,13 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "InvalidRequestError",
-          "content": "HTTP/1.1 400 Bad Request\n{\n     \"status\": 400,\n     \"message\": \"InvalidRequest: child \"email\" fails because [\"email\" must be a valid email]\"\n }",
+          "title": "BadRequestError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n     \"status\": 400,\n     \"message\": \"child \"email\" fails because [\"email\" must be a valid email]\"\n }",
           "type": "json"
         },
         {
           "title": "ConflictRequestError",
-          "content": "HTTP/1.1 409 Conflict\n{\n     \"status\": 409,\n     \"message\": \"ConflictRequest: The user already exist\"\n }",
+          "content": "HTTP/1.1 409 Conflict\n{\n     \"status\": 409,\n     \"message\": \"The user already exist\"\n }",
           "type": "json"
         }
       ]
@@ -217,6 +217,97 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost/access/signup"
+      }
+    ]
+  },
+  {
+    "type": "post,get",
+    "url": "/access/verify",
+    "title": "Verify access token",
+    "name": "Verification",
+    "group": "Access_API_Boundle",
+    "description": "<p>Verify access token</p>",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>User token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>HTTP 200 OK</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Authentication message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": 200,\n     \"message\": {\n         \"email\": \"stanisov@gmail.com\",\n         \"iat\": 1507436214,\n         \"exp\": 1507436274\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "BadRequestError",
+            "description": "<p>No token specified</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AccessForbiddenError",
+            "description": "<p>Invalid or expires token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "BadRequestError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n     \"status\": 400,\n     \"message\": \"No token specified\"\n }",
+          "type": "json"
+        },
+        {
+          "title": "AccessForbiddenError",
+          "content": "HTTP/1.1 403 Forbidden\n{\n     \"status\": 403,\n     \"message\": \"Invalid or expires token\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "boundles/api/access/routes.js",
+    "groupTitle": "Access_API_Boundle",
+    "sampleRequest": [
+      {
+        "url": "http://localhost/access/verify"
       }
     ]
   }
