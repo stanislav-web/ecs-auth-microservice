@@ -24,7 +24,6 @@ module.exports = async (ctx, next) => {
 
         await next();
     } catch (err) {
-        // will only respond with JSON
         ctx.status = err.statusCode || err.status || SERVER_ERROR;
         ctx.body = {
             status: ctx.status,

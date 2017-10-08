@@ -2,8 +2,14 @@ const DbError    = require('./exception').DbError;
 const {MongoClient}    = require('mongodb');
 const promisify    = require('es6-promisify');
 
+
 let _connection;
 
+/**
+ * Connection to db
+ *
+ * @return {*}
+ */
 const connection = () => {
     if (!_connection) {
         _connection = connect();
@@ -29,9 +35,8 @@ const connect = () => {
 /**
  * Returns a ready-to-use `collection` object from MongoDB.
  *
- * Usage:
- *
- *   (await getCollection('users')).find().toArray().then( ... )
+ * @param collectionName
+ * @return {Promise.<Collection|*>}
  */
 const getCollection = async (collectionName) => {
 
@@ -39,7 +44,7 @@ const getCollection = async (collectionName) => {
         const db = await connection();
         return db.collection(collectionName);
     } catch (err) {
-        throw new DbError('DatabaseError', err.toString());
+        throw new DbError(err.toString());
     }
 };
 
