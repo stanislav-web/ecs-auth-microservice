@@ -1,5 +1,5 @@
 const chakram = require('chakram');
-const {dropUserByEmail} = require('../../../../src/api/access/mapper');
+const {dropUserByEmail} = require('../../../src/api/access/mapper');
 const expect = chakram.expect;
 
 /**
@@ -13,7 +13,7 @@ const host = `${process.env.HTTP_PROTOCOL}${process.env.HTTP_HOST}:${process.env
  * Request uri
  * @type {string}
  */
-const requestUri = `${host}/access/signin`;
+const requestUri = `${host}/access/verify`;
 const requestBody = {
     'name': 'Stanislav',
     'phone': '38 099 999 99 99',
@@ -21,17 +21,16 @@ const requestBody = {
     'password': 'testPassword'
 };
 let apiResponse;
+let accessToken;
 
-describe(`Signin user: POST ${requestUri}`, () => {
+describe(`Verify user: POST ${requestUri}`, () => {
 
     before(() => {
-        chakram.post(`${host}/access/signup`, requestBody).then(() => {
-            apiResponse = chakram.post(requestUri, {
-                'email': requestBody.email,
-                'password': requestBody.password
-            });
+        apiResponse = chakram.post(`${host}/access/signup`, requestBody);
+        return apiResponse.then((response) => {
+            accessToken = response.body.message.token;
+            apiResponse = chakram.get(`${requestUri}/${accessToken}`);
         });
-        return apiResponse;
     });
 
     beforeEach('Pending...', (done) => { // prevent timeout responses
@@ -51,16 +50,14 @@ describe(`Signin user: POST ${requestUri}`, () => {
     it('should required valid schema', async () => {
         return expect(apiResponse).to.have.json((json) => {
             expect(json.status).to.equal(200);
-            expect(json.message.hasOwnProperty('expires_in')).to.equal(true);
-            expect(json.message.hasOwnProperty('token')).to.equal(true);
+            expect(json.message.hasOwnProperty('email')).to.equal(true);
+            expect(json.message.hasOwnProperty('iat')).to.equal(true);
+            expect(json.message.hasOwnProperty('exp')).to.equal(true);
         });
     });
 
     it('should return 400 if Bad Request', () => {
-        apiResponse = chakram.post(requestUri, {
-            'email': 'wrongemail',
-            'password': ''
-        });
+        apiResponse = chakram.get(requestUri);
         expect(apiResponse).to.have.status(400);
         expect(apiResponse).to.have.json((json) => {
             expect(json.hasOwnProperty('message')).to.equal(true);
@@ -68,33 +65,12 @@ describe(`Signin user: POST ${requestUri}`, () => {
         return chakram.wait();
     });
 
-    it('should return 404 if Not found', () => {
-        apiResponse = chakram.post(requestUri, {
-            'email': 'test@notfounduser.com',
-            'password': 'invalidpass'
-        });
-        expect(apiResponse).to.have.status(404);
-        expect(apiResponse).to.have.json((json) => {
-            expect(json.hasOwnProperty('message')).to.equal(true);
-        });
-        return chakram.wait();
-    });
-
     it('should return 403 if Access Forbidden', () => {
-        apiResponse = chakram.post(requestUri, {
-            'email': requestBody.email,
-            'password': 'invalidpass'
-        });
+        apiResponse = chakram.get(`${requestUri}/invalidTOken`);
         expect(apiResponse).to.have.status(403);
         expect(apiResponse).to.have.json((json) => {
             expect(json.hasOwnProperty('message')).to.equal(true);
         });
-        return chakram.wait();
-    });
-
-    it('should return 405 if Method not allowed', () => {
-        apiResponse = chakram.patch(`${requestUri}`);
-        expect(apiResponse).to.have.status(405);
         return chakram.wait();
     });
 

@@ -1,7 +1,7 @@
 const http = require('http');
 const koa = require('koa');
 const applogger = require('./logger');
-const mainBoundle = require('./src/main');
+const docBoundle = require('./src/doc');
 const apiBoundle = require('./src/api');
 const app = new koa();
 
@@ -39,5 +39,5 @@ process.on('uncaughtException', (err) => {
     applogger.error({ err }, 'Unhandled Exception');
     process.exit(1);
 });
-mainBoundle(app);
+docBoundle(app);
 apiBoundle(app);
