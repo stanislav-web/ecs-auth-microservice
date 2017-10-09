@@ -4,7 +4,7 @@ nginx:
     links:
         - app
     ports:
-        - "8081:80"
+        - "88:88"
 app:
     build: .
     dockerfile: Dockerfile.node

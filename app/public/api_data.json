@@ -104,7 +104,7 @@
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost/access/signin"
+        "url": "http://localhost:88/access/signin"
       }
     ]
   },
@@ -162,7 +162,7 @@
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p>HTTP 200 OK</p>"
+            "description": "<p>HTTP 201 Created</p>"
           },
           {
             "group": "Success 200",
@@ -176,7 +176,7 @@
       "examples": [
         {
           "title": "Success-Response",
-          "content": "HTTP/1.1 200 OK\n{\n     \"status\": 200,\n     \"message\": {\n         \"expires_in\": 1507343002,\n         \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTA3Mjk5MTI5LCJleHAiOjE1MDczODU1Mjl9.4Wom95yMQoSLSX_lzfC0oz__TDW6Rrj8pQS0Zwk7Bvs\"\n     }\n }",
+          "content": "HTTP/1.1 201 Created\n{\n     \"status\": 201,\n     \"message\": {\n         \"expires_in\": 1507343002,\n         \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTA3Mjk5MTI5LCJleHAiOjE1MDczODU1Mjl9.4Wom95yMQoSLSX_lzfC0oz__TDW6Rrj8pQS0Zwk7Bvs\"\n     }\n }",
           "type": "json"
         }
       ]
@@ -216,12 +216,12 @@
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost/access/signup"
+        "url": "http://localhost:88/access/signup"
       }
     ]
   },
   {
-    "type": "post,get",
+    "type": "post,get,put,delete",
     "url": "/access/verify",
     "title": "Verify access token",
     "name": "Verification",
@@ -307,7 +307,7 @@
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost/access/verify"
+        "url": "http://localhost:88/access/verify"
       }
     ]
   }
