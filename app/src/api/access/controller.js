@@ -130,7 +130,9 @@ const signinUser = async (ctx, next) => {
  */
 const verifyUser = async (ctx, next) => {
 
-    const token = ctx.request.header['x-access-token'] || ctx.request.body.token || ctx.params.token;
+    const token = ctx.request.header['x-access-token']
+        || ctx.request.body.token || ctx.params.token || ctx.query.token;
+
     if (token) {
         try {
             const verifyObject = await verifyTokenObject(token);

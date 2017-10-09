@@ -1,8 +1,8 @@
 const http = require('http');
 const koa = require('koa');
 const applogger = require('./logger');
-const mainBoundle = require('./boundles/main');
-const apiBoundle = require('./boundles/api');
+const mainBoundle = require('./src/main');
+const apiBoundle = require('./src/api');
 const app = new koa();
 
 /**

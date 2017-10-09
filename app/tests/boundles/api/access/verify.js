@@ -1,5 +1,5 @@
 const chakram = require('chakram');
-const {dropUserByEmail} = require('../../../../boundles/api/access/mapper');
+const {dropUserByEmail} = require('../../../../src/api/access/mapper');
 const expect = chakram.expect;
 
 /**

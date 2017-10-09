@@ -101,7 +101,7 @@ router.post('/access/signin', body(), signinUser);
 
 //noinspection Annotator,Annotator
 /**
- * @api {post,get,put,delete} /access/verify Verify access token
+ * @api {get} /access/verify Verify access token
  * @apiName Verification
  * @apiGroup Access API Boundle
  * @apiDescription Verify access token

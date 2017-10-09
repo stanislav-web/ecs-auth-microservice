@@ -100,11 +100,11 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "boundles/api/access/routes.js",
+    "filename": "src/api/access/routes.js",
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost:88/access/signin"
+        "url": "http://localhost:8080/access/signin"
       }
     ]
   },
@@ -212,16 +212,16 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "boundles/api/access/routes.js",
+    "filename": "src/api/access/routes.js",
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost:88/access/signup"
+        "url": "http://localhost:8080/access/signup"
       }
     ]
   },
   {
-    "type": "post,get,put,delete",
+    "type": "get",
     "url": "/access/verify",
     "title": "Verify access token",
     "name": "Verification",
@@ -303,11 +303,11 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "boundles/api/access/routes.js",
+    "filename": "src/api/access/routes.js",
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost:88/access/verify"
+        "url": "http://localhost:8080/access/verify"
       }
     ]
   }
