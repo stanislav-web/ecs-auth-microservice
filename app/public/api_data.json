@@ -310,5 +310,72 @@
         "url": "http://localhost:8080/access/verify"
       }
     ]
+  },
+  {
+    "type": "get",
+    "url": "/status/:key",
+    "title": "Microservice status",
+    "name": "Microservice_status",
+    "group": "Status",
+    "description": "<p>Get microservice status</p>",
+    "permission": [
+      {
+        "name": "root"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>HTTP 200 Created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Status message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": 200,\n     \"message\": {\n         \"now\":\"01:52:51 GMT+0300 (EEST)\",\n         \"revision\":\"62b1b88ef48bb3fe859b2bd374e64576f79e6cca\",\n         \"version\":\"v1.0\",\n         \"residentSet\":\"49.8 MB\",\n         \"totalHeap\":\"30.4 MB\",\n         \"usedHeap\":\"16.8 MB\",\n         \"uptime\":22.969\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AccessForbiddenError",
+            "description": "<p>Invalid key</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "AccessForbiddenError",
+          "content": "HTTP/1.1 403 Forbidden\n{\n     \"status\": 403,\n     \"message\": \"Invalid key\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/status/routes.js",
+    "groupTitle": "Status",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:8080/status/:key"
+      }
+    ]
   }
 ]

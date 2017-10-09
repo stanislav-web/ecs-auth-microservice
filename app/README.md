@@ -9,22 +9,4 @@ Represents high scalable architecture for "NodeJS" applications in the form of b
 ![NodeJS](http://bogdanov-blog.ru/wp-content/themes/blogus/img/types/nodejs.png) &rightarrow;
 ![MongoDb](https://download.asperasoft.com/download/docs/orchestrator/2.6.1/user_win/webhelp/images/plugin_MongodbOperation.png)
 
-#### IMPLEMENTS
- - Boundles API
- - Koa2
- - MongoDb native
- - Password encryption
- - JWT authentication
- 
-#### INSTALLATION
-
-```bash
-docker-compose up --build
-```
-
-### RUN
-```bash
-http://localhost:88 # (Nginx => NodeJs)
-```
-
-![Token](https://uploads.toptal.io/blog/image/958/toptal-blog-image-1426676428399.jpeg)
+**See main README from github repository**

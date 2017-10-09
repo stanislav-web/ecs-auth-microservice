@@ -11,4 +11,5 @@ module.exports =  (app) => {
     app.use(logger());
     app.use(error);
     app.use(require('./access/routes'));
+    app.use(require('./status/routes'));
 };

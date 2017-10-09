@@ -1,6 +1,6 @@
 {
   "name": "ecs-auth-microservice",
-  "version": "1.0.1",
+  "version": "1.1.2",
   "description": "Auth microserivice Docker: Nginx -> Node -> Mongo",
   "keywords": [],
   "author": {
@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node -r dotenv/config --harmony server.js",
     "dev": "nodemon -r dotenv/config --harmony server.js",
-    "doc": "apidoc -i src/api/access/ -o ./public",
+    "doc": "apidoc -i src/api/ -o ./public",
     "pretest": "eslint --fix src/** server.js",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -r dotenv/config -R spec --recursive ./tests --timeout 15000",
     "test": "mocha --timeout 2000 -r dotenv/config --reporter mochawesome --recursive ./tests",
@@ -34,6 +34,7 @@
   },
   "apidoc": {
     "title": "API Boundle",
+    "version": "1.1.2",
     "description": "Documentation for API Boundle of ECS Microservice",
     "url": "http://localhost:8080",
     "sampleUrl": "http://localhost:8080"

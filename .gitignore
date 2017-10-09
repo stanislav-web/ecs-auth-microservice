@@ -12,3 +12,4 @@ mochawesome-report/
 /app/.nyc_output/
 /app/coverage/
 /app/reports/
+/app/logs/

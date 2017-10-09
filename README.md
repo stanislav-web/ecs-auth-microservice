@@ -21,10 +21,37 @@ Represents high scalable architecture for "NodeJS" applications in the form of b
 ```bash
 docker-compose up --build
 ```
+or as standalone containers
+```bash
+docker build -f Dockerfile.mongo -t db .
+docker build -f Dockerfile.node -t application .
+docker build -f Dockerfile.nginx -t proxy .
+docker run --name db -p 27017:27017 -ti db:latest
+docker run --name application -p 8080:8080 -ti application:latest
+docker run --name proxy -p 80:80 -ti proxy:latest
+```
 
 ### RUN
 ```bash
 http://localhost:88 # (Nginx => NodeJs)
 ```
 
+### CHECK MICROSERVICE STATUS
+`http://localhost:88/status/:key` (see .env)
+
+```python
+HTTP/1.1 200 OK
+{
+     "status": 200,
+     "message": {
+         "now":"01:52:51 GMT+0300 (EEST)",
+         "revision":"62b1b88ef48bb3fe859b2bd374e64576f79e6cca",
+         "version":"v1.1.2",
+         "residentSet":"49.8 MB",
+         "totalHeap":"30.4 MB",
+         "usedHeap":"16.8 MB",
+         "uptime":22.969
+     }
+ }
+```
 ![Token](https://uploads.toptal.io/blog/image/958/toptal-blog-image-1426676428399.jpeg)
