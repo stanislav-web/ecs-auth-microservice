@@ -12,8 +12,11 @@ const app = new koa();
  */
 const server = http.createServer(app.callback())
     .listen(process.env.HTTP_PORT, () => {
-        applogger.info('Server is available at http://%s:%d',process.env.HTTP_HOST,
-            process.env.HTTP_PORT);
+        applogger.info('Server is available at %s%s:%d',
+            process.env.HTTP_PROTOCOL,
+            process.env.HTTP_HOST,
+            process.env.HTTP_PORT
+        );
     }).on('close', () => {
         applogger.info('Server shutdown.');
     });

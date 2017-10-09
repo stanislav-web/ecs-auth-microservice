@@ -14,7 +14,7 @@ const saveUser = async (data) => {
         return await collection.insertOne(data);
 
     } catch (err) {
-        throw new DbError('DatabaseError', err.toString());
+        throw new DbError(err.toString());
     }
 };
 
@@ -32,7 +32,7 @@ const updateUser = async (id, data) => {
         return await collection.updateOne({_id : id},
             { $set: data});
     } catch (err) {
-        throw new DbError('DatabaseError', err.toString());
+        throw new DbError(err.toString());
     }
 };
 
@@ -51,7 +51,25 @@ const findUserByEmail = async (email, projection = { token: false, password: fal
         return await result.toArray();
 
     } catch (err) {
-        throw new DbError('DatabaseError', err.toString());
+        throw new DbError(err.toString());
+    }
+};
+
+/**
+ * Drop user by email
+ *
+ * @param email
+ * @return {Promise.<*>}
+ */
+const dropUserByEmail = async (email) => {
+
+    try {
+        let collection = await db.getCollection('access');
+        let result = collection.removeOne({email: email});
+        return await result;
+
+    } catch (err) {
+        throw new DbError(err.toString());
     }
 };
 
@@ -62,8 +80,9 @@ const findUserByEmail = async (email, projection = { token: false, password: fal
  *      {
  *          saveUser: (function(*=)),
  *          updateUser: (function(*=, *=)),
- *          findUserByEmail: (function(*=, *=))
+ *          findUserByEmail: (function(*=, *=)),
+ *          dropUserByEmail: (function(*=)),
  *       }
  *     }
  */
-module.exports = {saveUser, updateUser,findUserByEmail};
+module.exports = {saveUser, updateUser,findUserByEmail, dropUserByEmail};

@@ -14,13 +14,13 @@ const {signupUser, signinUser, verifyUser} = require('./controller');
  * @apiParam {String} email         User email
  * @apiParam {String} password      User password
  *
- * @apiSuccess {Number} status HTTP 200 OK
+ * @apiSuccess {Number} status HTTP 201 Created
  * @apiSuccess {Object[]} message  Authentication message
  *
  * @apiSuccessExample Success-Response
- *     HTTP/1.1 200 OK
+ *     HTTP/1.1 201 Created
  *     {
- *          "status": 200,
+ *          "status": 201,
  *          "message": {
  *              "expires_in": 1507343002,
  *              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTA3Mjk5MTI5LCJleHAiOjE1MDczODU1Mjl9.4Wom95yMQoSLSX_lzfC0oz__TDW6Rrj8pQS0Zwk7Bvs"
@@ -101,7 +101,7 @@ router.post('/access/signin', body(), signinUser);
 
 //noinspection Annotator,Annotator
 /**
- * @api {post,get} /access/verify Verify access token
+ * @api {post,get,put,delete} /access/verify Verify access token
  * @apiName Verification
  * @apiGroup Access API Boundle
  * @apiDescription Verify access token

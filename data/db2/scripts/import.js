@@ -3,7 +3,7 @@ db.createUser({
     pwd: 'password',
     roles: [ {
         role: 'readWrite',
-        db: 'access'
+        db: 'users'
     }]
 });
 db.createCollection('access');

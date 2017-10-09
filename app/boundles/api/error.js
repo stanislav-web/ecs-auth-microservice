@@ -21,7 +21,6 @@ module.exports = async (ctx, next) => {
         if (false === allowedMethods.includes(ctx.request.method)) {
             ctx.status = NOT_ALLOWED;
         }
-
         await next();
     } catch (err) {
         ctx.status = err.statusCode || err.status || SERVER_ERROR;

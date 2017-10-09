@@ -9,3 +9,6 @@ mochawesome-report/
 .idea/
 /coverage
 /clean.sh
+/app/.nyc_output/
+/app/coverage/
+/app/reports/

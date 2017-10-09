@@ -8,7 +8,7 @@ const util = require('util');
  */
 function DbError (message) {
 
-    this.status = 'DatabaseError';
+    this.status = 500;
     this.message = message;
 }
 

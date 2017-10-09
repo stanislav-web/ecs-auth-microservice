@@ -25,9 +25,9 @@ const signupUser = async (ctx, next) => {
 
     //noinspection Annotator
     let res = joi.validate(ctx.request.body, schema);
-
     if (null === res.error) {
         let user = await findUserByEmail(res.value.email);
+
         if (0 >= user.length) {
 
             try {
@@ -35,9 +35,9 @@ const signupUser = async (ctx, next) => {
                 let recordObject = await createRecordObject(res.value);
                 await saveUser(recordObject);
                 let tokenObject = await generateTokenObject(res.value);
-
+                ctx.response.status = HttpStatus.CREATED;
                 ctx.body = {
-                    status: 200,
+                    status: HttpStatus.CREATED,
                     message: {
                         expires_in: tokenObject.expires_in,
                         token: tokenObject.token
@@ -90,7 +90,7 @@ const signinUser = async (ctx, next) => {
                 try {
                     await updateUser(dbuser._id, {modified_at: new Date()});
                     ctx.body = {
-                        status: 200,
+                        status: HttpStatus.OK,
                         message: {
                             expires_in: obj.expires_in,
                             token: obj.token
@@ -135,7 +135,7 @@ const verifyUser = async (ctx, next) => {
         try {
             const verifyObject = await verifyTokenObject(token);
             ctx.body = {
-                status: 200,
+                status: HttpStatus.OK,
                 message: {
                     email: verifyObject.email,
                     iat: verifyObject.iat,
@@ -159,6 +159,13 @@ const verifyUser = async (ctx, next) => {
 /**
  * Controller actions
  *
- * @type {{signupUser: (function(*, *)), signinUser: (function(*, *)), verifyUser: (function(*, *))}}
+ * @type {
+ *      {
+ *          signupUser: (function(*, *)),
+ *          signinUser: (function(*, *)),
+ *          verifyUser: (function(*, *)),
+ *       }
+ *     }
+ *
  */
 module.exports = {signupUser, signinUser, verifyUser};
