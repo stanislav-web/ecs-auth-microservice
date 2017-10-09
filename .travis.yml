@@ -13,12 +13,12 @@ env:
   - HTTP_PROTOCOL=http://
   - HTTP_HOST=localhost
   - HTTP_PORT=8080
-  - MONGO_CONNECTION_STRING=mongodb://localhost:27017/mydb_test
+  - MONGO_CONNECTION_STRING=mongodb://localhost:27017/users
 
 before_install:
   - "sh build/travis.sh"
 before_script:
-  - "mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'"
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
   - "npm install"
   - "npm start&"
 script:
