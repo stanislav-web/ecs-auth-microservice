@@ -1,7 +1,13 @@
 ### ECS-AUTH-MICROSERVISE
-_(Nginx as foreground, NodeJs as a primary server, MongoDb or Radis for the account store)_
+_(Nginx as foreground, NodeJs as a primary server, MongoDb or Radis for the accounts store)_
 
-[![Build Status](https://travis-ci.org/stanislav-web/ecs-auth-microservice.svg?branch=master)](https://travis-ci.org/stanislav-web/ecs-auth-microservice) [![Coverage Status](https://coveralls.io/repos/github/stanislav-web/ecs-auth-microservice/badge.svg?branch=master)](https://coveralls.io/github/stanislav-web/ecs-auth-microservice?branch=master) [![GitHub license](https://img.shields.io/badge/license-AGPL-blue.svg)](https://raw.githubusercontent.com/stanislav-web/ecs-auth-microservice/master/LICENSE)
+
+|  Assembly | Status |
+|:-:|:-:|
+|Node & Mongo|[![Build Status](https://travis-ci.org/stanislav-web/ecs-auth-microservice.svg?branch=master)](https://travis-ci.org/stanislav-web/ecs-auth-microservice/builds/286316998) | 
+|Node & Redis|[![Build Status](https://travis-ci.org/stanislav-web/ecs-auth-microservice.svg?branch=master)](https://travis-ci.org/stanislav-web/ecs-auth-microservice/builds/286316998) |
+
+ [![Coverage Status](https://coveralls.io/repos/github/stanislav-web/ecs-auth-microservice/badge.svg?branch=master)](https://coveralls.io/github/stanislav-web/ecs-auth-microservice?branch=master) [![GitHub license](https://img.shields.io/badge/license-AGPL-blue.svg)](https://raw.githubusercontent.com/stanislav-web/ecs-auth-microservice/master/LICENSE)
 
 This assemblage implements REST auth micoservice proxied by Nginx as Reverse Proxy Server.
 Represents high scalable architecture for "NodeJS" applications in the form of boundles inside.
