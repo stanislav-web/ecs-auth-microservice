@@ -1,8 +1,8 @@
 const {compare} = require('./lib/crypt');
-const {createRecordObject, generateTokenObject, verifyTokenObject} = require('./lib/scheme');
+const {createRecordObject, generateTokenObject} = require('./lib/scheme');
 const HttpStatus = require('http-status-codes');
 const {saveUser, updateUser, findUserByEmail} = require('./mapper');
-const {ApiBoundleError} = require('./exception');
+const {ApiAccessBoundleError} = require('./exception');
 const joi = require('joi');
 
 /**
@@ -10,7 +10,7 @@ const joi = require('joi');
  *
  * @param ctx
  * @param next
- * @throws ApiBoundleError
+ * @throws ApiAccessBoundleError
  * @returns {Promise.<void>}
  */
 const signupUser = async (ctx, next) => {
@@ -44,15 +44,15 @@ const signupUser = async (ctx, next) => {
                     }
                 };
             } catch (err) {
-                throw new ApiBoundleError(
+                throw new ApiAccessBoundleError(
                     HttpStatus.SERVICE_UNAVAILABLE, err);
             }
         } else {
-            throw new ApiBoundleError(
+            throw new ApiAccessBoundleError(
                 HttpStatus.CONFLICT, 'The user already exist');
         }
     } else {
-        throw new ApiBoundleError(
+        throw new ApiAccessBoundleError(
             HttpStatus.BAD_REQUEST, res.error.message);
     }
 
@@ -64,7 +64,7 @@ const signupUser = async (ctx, next) => {
  *
  * @param ctx
  * @param next
- * @throws ApiBoundleError
+ * @throws ApiAccessBoundleError
  * @returns {Promise.<void>}
  */
 const signinUser = async (ctx, next) => {
@@ -80,7 +80,7 @@ const signinUser = async (ctx, next) => {
 
     if (null === res.error) {
 
-        let user = await findUserByEmail(res.value.email, {_id: true, password: true});
+        let user = await findUserByEmail(res.value.email);
         if (0 < user.length) {
             let dbuser = user.shift();
             let isAuth = await compare(res.value.password.trim(), dbuser.password);
@@ -88,7 +88,7 @@ const signinUser = async (ctx, next) => {
                 let obj = await generateTokenObject(res.value);
 
                 try {
-                    await updateUser(dbuser._id, {modified_at: new Date()});
+                    await updateUser(dbuser._id || dbuser.email);
                     ctx.body = {
                         status: HttpStatus.OK,
                         message: {
@@ -97,61 +97,23 @@ const signinUser = async (ctx, next) => {
                         }
                     };
                 } catch (err) {
-                    throw new ApiBoundleError(
-                        HttpStatus.SERVICE_UNAVAILABLE, err
+                    throw new ApiAccessBoundleError(
+                        HttpStatus.SERVICE_UNAVAILABLE, err.message
                     );
                 }
             } else {
-                throw new ApiBoundleError(
+                throw new ApiAccessBoundleError(
                     HttpStatus.FORBIDDEN, 'Invalid credentials'
                 );
             }
         } else {
-            throw new ApiBoundleError(
+            throw new ApiAccessBoundleError(
                 HttpStatus.NOT_FOUND, 'User not found'
             );
         }
     } else {
-        throw new ApiBoundleError(
+        throw new ApiAccessBoundleError(
             HttpStatus.BAD_REQUEST, res.error.message
-        );
-    }
-
-    await next();
-};
-
-/**
- * Verify user token
- *
- * @param ctx
- * @param next
- * @throws ApiBoundleError
- * @returns {Promise.<void>}
- */
-const verifyUser = async (ctx, next) => {
-
-    const token = ctx.request.header['x-access-token']
-        || ctx.request.body.token || ctx.params.token || ctx.query.token;
-
-    if (token) {
-        try {
-            const verifyObject = await verifyTokenObject(token);
-            ctx.body = {
-                status: HttpStatus.OK,
-                message: {
-                    email: verifyObject.email,
-                    iat: verifyObject.iat,
-                    exp: verifyObject.exp
-                }
-            };
-        } catch (err) {
-            throw new ApiBoundleError(
-                HttpStatus.FORBIDDEN, 'Invalid or expires token'
-            );
-        }
-    } else {
-        throw new ApiBoundleError(
-            HttpStatus.BAD_REQUEST, 'No token specified'
         );
     }
 
@@ -164,10 +126,12 @@ const verifyUser = async (ctx, next) => {
  * @type {
  *      {
  *          signupUser: (function(*, *)),
- *          signinUser: (function(*, *)),
- *          verifyUser: (function(*, *)),
+ *          signinUser: (function(*, *))
  *       }
  *     }
  *
  */
-module.exports = {signupUser, signinUser, verifyUser};
+module.exports = {
+    signupUser,
+    signinUser
+};

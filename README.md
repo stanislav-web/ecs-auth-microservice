@@ -1,42 +1,70 @@
-### NGINX NodeJS MongoDb
+### ECS-AUTH-MICROSERVISE
+_(Nginx as foreground, NodeJs as a primary server, MongoDb or Radis for the account store)_
 
 [![Build Status](https://travis-ci.org/stanislav-web/ecs-auth-microservice.svg?branch=master)](https://travis-ci.org/stanislav-web/ecs-auth-microservice) [![Coverage Status](https://coveralls.io/repos/github/stanislav-web/ecs-auth-microservice/badge.svg?branch=master)](https://coveralls.io/github/stanislav-web/ecs-auth-microservice?branch=master) [![GitHub license](https://img.shields.io/badge/license-AGPL-blue.svg)](https://raw.githubusercontent.com/stanislav-web/ecs-auth-microservice/master/LICENSE)
 
-This assemblage implements REST auth micoservice proxied by Nginx as Forward Proxy Server.
+This assemblage implements REST auth micoservice proxied by Nginx as Reverse Proxy Server.
 Represents high scalable architecture for "NodeJS" applications in the form of boundles inside.
 
 ![Nginx](https://images.sftcdn.net/images/t_optimized,f_auto/p/6dd52663-2bbf-48e0-a7cc-cdb043b326ef/1544311950/nginx-logo.png) &rightarrow;
 ![NodeJS](http://bogdanov-blog.ru/wp-content/themes/blogus/img/types/nodejs.png) &rightarrow;
-![MongoDb](https://download.asperasoft.com/download/docs/orchestrator/2.6.1/user_win/webhelp/images/plugin_MongodbOperation.png)
+![MongoDb](https://download.asperasoft.com/download/docs/orchestrator/2.6.1/user_win/webhelp/images/plugin_MongodbOperation.png) &rightarrow;
+![Redis](https://www.onlinedeliverysoftware.com/wp-content/themes/onlinedeliverysoftware/img/tools-tech/redis.png)
 
-#### IMPLEMENTS
+##### IMPLEMENTS
  - Boundles API
  - Koa2
  - MongoDb native
+ - Redis native
  - Password encryption
  - JWT authentication
  
-#### INSTALLATION
+##### INSTALL WITH MONGO DB
 
 ```bash
-docker-compose up --build
-```
-or as standalone containers
-```bash
-docker build -f Dockerfile.mongo -t db .
+sh build/mongo.sh 
+
+docker build -f Dockerfile.mongo -t mongo .
 docker build -f Dockerfile.node -t application .
-docker build -f Dockerfile.nginx -t proxy .
-docker run --name db -p 27017:27017 -ti db:latest
+docker build -f Dockerfile.nginx -t nginx .
+
+docker run --name mongo -p 27017:27017 -ti mongo:latest
 docker run --name application -p 8080:8080 -ti application:latest
-docker run --name proxy -p 80:80 -ti proxy:latest
+docker run --name nginx -p 80:80 -ti nginx:latest
 ```
 
-### RUN
+##### INSTALL WITH REDIS STORAGE
+
 ```bash
-http://localhost:88 # (Nginx => NodeJs)
+sh build/redis.sh
+
+docker build -f Dockerfile.redis -t redis .
+docker build -f Dockerfile.node -t application .
+docker build -f Dockerfile.nginx -t nginx .
+
+docker run --name redis -p 6379:6379 -ti redis:latest
+docker run --name application -p 8080:8080 -ti application:latest
+docker run --name nginx -p 80:80 -ti nginx:latest
 ```
 
-### CHECK MICROSERVICE STATUS
+##### CONFIGURATION
+```bash
+.env
+```
+
+##### RUN
+```bash
+http://localhost:88 # (Nginx 88 => NodeJs 8080)
+```
+
+##### RUN AS NODE SERVER
+```bash
+# STORAGE=redis
+npm start 
+
+```
+
+##### CHECK MICROSERVICE STATUS
 `http://localhost:88/status/:key` (see .env)
 
 ```python

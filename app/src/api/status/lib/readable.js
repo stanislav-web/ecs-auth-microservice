@@ -36,6 +36,11 @@ const prettifyBytes = (num) => {
 /**
  * Export
  *
- * @type {{prettify: (function(*=))}}
+ * @type {
+ *          {prettify: (function(*=))
+ *       }
+ *    }
  */
-module.exports = {prettifyBytes};
+module.exports = {
+    prettifyBytes
+};

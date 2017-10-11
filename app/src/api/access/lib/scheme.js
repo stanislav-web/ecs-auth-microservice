@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken-refresh');
 const {hash} = require('./crypt');
 
 /**
- * createRecordObject
+ * Create object values for token
  *
  * @param obj
  * @return {Promise.<void>}
@@ -18,7 +18,7 @@ const createRecordObject = async (obj) => {
 };
 
 /**
- * generateTokenObject
+ * Generate Token by object values
  *
  * @param obj
  * @return {Promise.<void>}
@@ -35,13 +35,29 @@ const generateTokenObject = async (obj) => {
 };
 
 /**
- * JWT Verification
+ * JWT Refreshing
  *
  * @param token
  * @return {Promise.<*>}
  */
-const verifyTokenObject = async (token) => {
-    return await jwt.verify(token, process.env.TOKEN_SECRET);
+const refreshTokenObject = async (token) => {
+    let originalDecoded = jwt.decode(token, {complete: true});
+    return await jwt.refresh(originalDecoded, process.env.TOKEN_EXPIRES, process.env.TOKEN_SECRET);
 };
 
-module.exports = {createRecordObject, generateTokenObject, verifyTokenObject};
+/**
+ * Export
+ *
+ * @type {
+ *          {
+ *              createRecordObject: (function(*)),
+ *              generateTokenObject: (function(*=)),
+ *              refreshTokenObject: (function(*=))
+ *          }
+ *       }
+ */
+module.exports = {
+    createRecordObject,
+    generateTokenObject,
+    refreshTokenObject
+};

@@ -1,46 +1,31 @@
 const util = require('util');
 
 /**
- * DbError error exception
- *
- * @param {string} message exception message
- * @constructor
- */
-function DbError (message) {
-
-    this.status = 500;
-    this.message = message;
-}
-
-/**
- * ApiBoundleError error exception
+ * ApiAccessBoundleError error exception
  *
  * @param {string} status exception status
  * @param {string} message exception message
  * @constructor
  */
-function ApiBoundleError (status = 'ApiBoundle', message) {
+function ApiAccessBoundleError (status = 'ApiAccessBoundle', message) {
 
     this.status = status;
     this.message = message;
 }
 
-util.inherits(DbError, Error);
-util.inherits(ApiBoundleError, Error);
+util.inherits(ApiAccessBoundleError, Error);
 
-DbError.prototype.name = 'DbError';
-ApiBoundleError.prototype.name = 'ApiBoundle';
+ApiAccessBoundleError.prototype.name = 'ApiAccessBoundle';
 
 /**
  * Exceptions set
+ *
  * @type {
  *  {
- *      DbError: DbError,
- *      ApiBoundleError: ApiBoundleError
+ *      ApiAccessBoundleError: ApiAccessBoundleError
  *  }
  *}
  */
 module.exports = {
-    DbError,
-    ApiBoundleError
+    ApiAccessBoundleError
 };

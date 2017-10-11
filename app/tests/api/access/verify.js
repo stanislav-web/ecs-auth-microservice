@@ -13,7 +13,7 @@ const host = `${process.env.HTTP_PROTOCOL}${process.env.HTTP_HOST}:${process.env
  * Request uri
  * @type {string}
  */
-const requestUri = `${host}/access/verify`;
+const requestUri = `${host}/verify`;
 const requestBody = {
     'name': 'Stanislav',
     'phone': '38 099 999 99 99',

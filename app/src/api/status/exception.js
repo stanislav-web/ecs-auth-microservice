@@ -1,30 +1,30 @@
 const util = require('util');
 
 /**
- * ApiBoundleError error exception
+ * ApiStatusBoundleError error exception
  *
  * @param {string} status exception status
  * @param {string} message exception message
  * @constructor
  */
-function ApiBoundleError (status = 'ApiBoundle', message) {
+function ApiStatusBoundleError (status = 'ApiStatusBoundle', message) {
 
     this.status = status;
     this.message = message;
 }
 
-util.inherits(ApiBoundleError, Error);
+util.inherits(ApiStatusBoundleError, Error);
 
-ApiBoundleError.prototype.name = 'ApiBoundle';
+ApiStatusBoundleError.prototype.name = 'ApiStatusBoundle';
 
 /**
  * Exceptions set
  * @type {
  *  {
- *      ApiBoundleError: ApiBoundleError
+ *      ApiStatusBoundleError: ApiStatusBoundleError
  *  }
  *}
  */
 module.exports = {
-    ApiBoundleError
+    ApiStatusBoundleError
 };

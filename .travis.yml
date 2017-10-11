@@ -1,19 +1,18 @@
 language: node_js
 node_js:
   - "8"
-services: mongodb
+
+env:
+  - STORAGE=mongo
+  - STORAGE=redis
+
+services:
+  - mongodb
+  - redis-server
+
 cache:
   directories:
     - "node_modules"
-env:
-  global:
-  - NODE_ENV=dev
-  - TOKEN_SECRET=WvtoFkWGifBVeJGSN4Ot
-  - TOKEN_EXPIRES=1m
-  - HTTP_PROTOCOL=http://
-  - HTTP_HOST=localhost
-  - HTTP_PORT=8080
-  - MONGO_CONNECTION_STRING=mongodb://localhost:27017/users
 
 before_install:
   - cd app && npm install -g npm && npm install -g mocha

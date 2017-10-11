@@ -19,25 +19,23 @@ const server = http.createServer(app.callback())
         );
     }).on('close', () => {
         applogger.info('Server shutdown.');
+    }).on('error', (err) => {
+        applogger.error(err.message);
+        process.exit(1);
     });
 
 /**
- * Shutdown server event
+ * Process events
  */
 process.on('SIGINT', () => {
     server.close(() => {
         process.exit(0);
     });
+}).on('unhandledRejection', (err) => {
+    server.emit('error', err);
+}).on('uncaughtException', (err) => {
+    server.emit('error', err);
 });
 
-process.on('unhandledRejection', (err) => {
-    applogger.error({ err: err }, 'Unhandled Rejection');
-    process.exit(1);
-});
-
-process.on('uncaughtException', (err) => {
-    applogger.error({ err }, 'Unhandled Exception');
-    process.exit(1);
-});
 docBoundle(app);
 apiBoundle(app);

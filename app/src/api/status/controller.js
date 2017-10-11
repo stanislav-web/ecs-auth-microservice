@@ -1,6 +1,6 @@
 const HttpStatus = require('http-status-codes');
 const system = require('./lib/system');
-const {ApiBoundleError} = require('./exception');
+const {ApiStatusBoundleError} = require('./exception');
 
 /**
  * Authorize user by credentials
@@ -26,7 +26,7 @@ const getStatus = async (ctx, next) => {
             }
         };
     } else {
-        throw new ApiBoundleError(
+        throw new ApiStatusBoundleError(
             HttpStatus.FORBIDDEN, 'Invalid key'
         );
     }
@@ -44,4 +44,6 @@ const getStatus = async (ctx, next) => {
  *     }
  *
  */
-module.exports = {getStatus};
+module.exports = {
+    getStatus
+};

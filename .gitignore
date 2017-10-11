@@ -7,9 +7,6 @@ mochawesome-report/
 
 # User-specific stuff:
 .idea/
-/coverage
-/clean.sh
-/app/.nyc_output/
 /app/coverage/
 /app/reports/
 /app/logs/

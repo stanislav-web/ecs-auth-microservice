@@ -222,97 +222,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/access/verify",
-    "title": "Verify access token",
-    "name": "Verification",
-    "group": "Access_API_Boundle",
-    "description": "<p>Verify access token</p>",
-    "permission": [
-      {
-        "name": "user"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "token",
-            "description": "<p>User token</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>HTTP 200 OK</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Authentication message</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response",
-          "content": "HTTP/1.1 200 OK\n{\n     \"status\": 200,\n     \"message\": {\n         \"email\": \"stanisov@gmail.com\",\n         \"iat\": 1507436214,\n         \"exp\": 1507436274\n     }\n }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "BadRequestError",
-            "description": "<p>No token specified</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "AccessForbiddenError",
-            "description": "<p>Invalid or expires token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "BadRequestError",
-          "content": "HTTP/1.1 400 Bad Request\n{\n     \"status\": 400,\n     \"message\": \"No token specified\"\n }",
-          "type": "json"
-        },
-        {
-          "title": "AccessForbiddenError",
-          "content": "HTTP/1.1 403 Forbidden\n{\n     \"status\": 403,\n     \"message\": \"Invalid or expires token\"\n }",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "src/api/access/routes.js",
-    "groupTitle": "Access_API_Boundle",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:8080/access/verify"
-      }
-    ]
-  },
-  {
-    "type": "get",
     "url": "/status/:key",
     "title": "Microservice status",
     "name": "Microservice_status",
@@ -375,6 +284,97 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost:8080/status/:key"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/verify/:token",
+    "title": "Verify access token",
+    "name": "Token_Verification",
+    "group": "Verification",
+    "description": "<p>Verify access token</p>",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>User token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>HTTP 200 OK</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Authentication message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n     \"status\": 200,\n     \"message\": {\n         \"uid\": \"59dc39a68610ad6ff6e4bf0a\",\n         \"email\": \"stanisov@gmail.com\",\n         \"iat\": 1507436214,\n         \"exp\": 1507436274\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "BadRequestError",
+            "description": "<p>No token specified</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AccessForbiddenError",
+            "description": "<p>Invalid or expires token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "BadRequestError",
+          "content": "HTTP/1.1 400 Bad Request\n{\n     \"status\": 400,\n     \"message\": \"No token specified\"\n }",
+          "type": "json"
+        },
+        {
+          "title": "AccessForbiddenError",
+          "content": "HTTP/1.1 403 Forbidden\n{\n     \"status\": 403,\n     \"message\": \"Invalid or expires token\"\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/api/verify/routes.js",
+    "groupTitle": "Verification",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:8080/verify/:token"
       }
     ]
   }

@@ -55,7 +55,15 @@ const getCurrentGitTag = () => {
 /**
  * Export
  *
- * @type {{getResidentSet: (function()), getHeapTotal: (function()), getHeapUsed: (function()), getCurrentGitRevision: (function()), getCurrentGitTag: (function())}}
+ * @type {
+ *          {
+ *              getResidentSet: (function()),
+ *              getHeapTotal: (function()),
+ *              getHeapUsed: (function()),
+ *              getCurrentGitRevision: (function()),
+ *              getCurrentGitTag: (function())
+ *           }
+ *       }
  */
 module.exports = {
     getResidentSet,

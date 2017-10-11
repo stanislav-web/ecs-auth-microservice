@@ -1,7 +1,6 @@
 const DbError    = require('./exception').DbError;
 const {MongoClient}    = require('mongodb');
-const promisify    = require('es6-promisify');
-
+const bluebird    = require('bluebird');
 
 let _connection;
 
@@ -10,9 +9,9 @@ let _connection;
  *
  * @return {*}
  */
-const connection = () => {
+const connection = async () => {
     if (!_connection) {
-        _connection = connect();
+        _connection = await connect();
     }
 
     return _connection;
@@ -26,10 +25,10 @@ const connection = () => {
  */
 const connect = () => {
     if (!process.env.MONGO_CONNECTION_STRING) {
-        throw new DbError('MongoDbError', 'Environment variable MONGO_CONNECTION_STRING must be set to use API.');
+        throw new DbError('Environment variable MONGO_CONNECTION_STRING must be set to use API.');
     }
 
-    return promisify(MongoClient.connect)(process.env.MONGO_CONNECTION_STRING);
+    return bluebird.promisify(MongoClient.connect)(process.env.MONGO_CONNECTION_STRING);
 };
 
 /**
@@ -48,4 +47,15 @@ const getCollection = async (collectionName) => {
     }
 };
 
-module.exports = {connect, getCollection};
+/**
+ * Export
+ *
+ * @type {
+ *          {
+ *              getCollection: (function(*=))
+ *           }
+ *       }
+ */
+module.exports = {
+    getCollection
+};

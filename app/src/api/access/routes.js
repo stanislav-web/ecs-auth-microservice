@@ -1,6 +1,6 @@
 const router = require('koa-router')();
 const body = require('koa-body');
-const {signupUser, signinUser, verifyUser} = require('./controller');
+const {signupUser, signinUser} = require('./controller');
 
 //noinspection Annotator,Annotator
 /**
@@ -98,49 +98,6 @@ router.post('/access/signup', body(), signupUser);
  *      }
  */
 router.post('/access/signin', body(), signinUser);
-
-//noinspection Annotator,Annotator
-/**
- * @api {get} /access/verify Verify access token
- * @apiName Verification
- * @apiGroup Access API Boundle
- * @apiDescription Verify access token
- * @apiPermission user
- * @apiParam {String} token         User token
- *
- * @apiSuccess {Number} status HTTP 200 OK
- * @apiSuccess {Object[]} message  Authentication message
- *
- * @apiSuccessExample Success-Response
- *     HTTP/1.1 200 OK
- *     {
- *          "status": 200,
- *          "message": {
- *              "email": "stanisov@gmail.com",
- *              "iat": 1507436214,
- *              "exp": 1507436274
- *          }
- *      }
- *
- * @apiError BadRequestError No token specified
- *
- * @apiErrorExample BadRequestError
- *     HTTP/1.1 400 Bad Request
- *     {
- *          "status": 400,
- *          "message": "No token specified"
- *      }
- *
- * @apiError AccessForbiddenError Invalid or expires token
- *
- * @apiErrorExample AccessForbiddenError
- *     HTTP/1.1 403 Forbidden
- *     {
- *          "status": 403,
- *          "message": "Invalid or expires token"
- *      }
- */
-router.all('/access/verify/:token?', body(), verifyUser);
 
 //noinspection Annotator,Annotator
 router.allowedMethods({
