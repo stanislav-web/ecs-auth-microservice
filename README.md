@@ -26,6 +26,11 @@ Represents high scalable architecture for "NodeJS" applications in the form of b
  - Password encryption
  - JWT authentication
  
+##### DEFAULT (USE MongoDB)
+```bash
+docker-compose up --build
+```
+
 ##### INSTALL WITH MONGO DB
 
 ```bash

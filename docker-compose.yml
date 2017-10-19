@@ -10,7 +10,6 @@ app:
     dockerfile: Dockerfile.node
     links:
         - mongo
-        - redis
     ports:
         - "8080:8080"
 mongo:
@@ -18,9 +17,3 @@ mongo:
     dockerfile: Dockerfile.mongo
     ports:
         - "27017:27017"
-
-redis:
-    build: .
-    dockerfile: Dockerfile.redis
-    ports:
-        - "6379:6379"
