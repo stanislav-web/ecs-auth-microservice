@@ -23,8 +23,8 @@
     "dev": "nodemon -r dotenv/config --harmony server.js",
     "doc": "apidoc -i src/api/ -o ./public",
     "pretest": "./node_modules/.bin/eslint --fix src/** server.js",
-    "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -r dotenv/config -R spec --recursive ./tests --timeout 15000",
-    "test": "mocha --timeout 2000 -r dotenv/config --reporter mochawesome --recursive ./tests"
+    "test-travis": "node --harmony ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -r dotenv/config -R spec --recursive ./tests --timeout 15000",
+    "test": "./node_modules/mocha/bin/_mocha --timeout 2000 -r dotenv/config --reporter mochawesome --recursive ./tests"
   },
   "main": "server.js",
   "engines": {
@@ -59,7 +59,7 @@
     "dotenv": "^4.0.0",
     "eslint": "^4.8.0",
     "eslint-plugin-async-await": "0.0.0",
-    "istanbul": "^0.4.5",
+    "istanbul": "^1.1.0-alpha.1",
     "jscoverage": "^0.6.0",
     "mocha": "^3.5.3",
     "mochawesome": "^2.3.1",

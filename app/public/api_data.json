@@ -240,7 +240,7 @@
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p>HTTP 200 Created</p>"
+            "description": "<p>HTTP 200 OK</p>"
           },
           {
             "group": "Success 200",

@@ -6,7 +6,6 @@ RUN mkdir -p /data/db2 \
     && chown -R mongodb:mongodb /data/db2
 
 COPY ./data/db2 /data/db2
-COPY ./data/mongodb.log /var/log/mongodb.log
 
 RUN mongod --fork --logpath /var/log/mongodb.log --dbpath /data/db2 --smallfiles \
     && IMPORT=/data/db2/scripts/import.js \

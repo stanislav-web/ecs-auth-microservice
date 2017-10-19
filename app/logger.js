@@ -12,13 +12,6 @@ const logger = new (winston.Logger)({
             maxFiles: 10,
             level: 'error',
             json: true
-        }),
-        new (winston.transports.File)({
-            filename: './logs/combined.log',
-            name: 'file.all',
-            maxsize: 1024000,
-            maxFiles: 10,
-            json: true
         })
     ]
 });

@@ -2,7 +2,6 @@
   "plugins": [
     "async-await"
   ],
-  "root" : true,
   "env": {
     "es6": true,
     "node": true,

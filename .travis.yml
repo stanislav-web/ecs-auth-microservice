@@ -15,7 +15,7 @@ cache:
     - "node_modules"
 
 before_install:
-  - cd app && npm install -g npm && npm install -g mocha
+  - cd app && npm install -g npm
 before_script:
   - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
   - "npm install"
