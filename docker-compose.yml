@@ -11,9 +11,10 @@ app:
     links:
         - mongo
     ports:
-        - "8080:8080"
+        - "8777:8777"
 mongo:
     build: .
     dockerfile: Dockerfile.mongo
     ports:
         - "27017:27017"
+    command: mongod --smallfiles --logpath=/dev/null

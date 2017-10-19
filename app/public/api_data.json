@@ -104,7 +104,7 @@
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost:8080/access/signin"
+        "url": "http://localhost:8777/access/signin"
       }
     ]
   },
@@ -216,7 +216,7 @@
     "groupTitle": "Access_API_Boundle",
     "sampleRequest": [
       {
-        "url": "http://localhost:8080/access/signup"
+        "url": "http://localhost:8777/access/signup"
       }
     ]
   },
@@ -283,7 +283,7 @@
     "groupTitle": "Status",
     "sampleRequest": [
       {
-        "url": "http://localhost:8080/status/:key"
+        "url": "http://localhost:8777/status/:key"
       }
     ]
   },
@@ -374,7 +374,7 @@
     "groupTitle": "Verification",
     "sampleRequest": [
       {
-        "url": "http://localhost:8080/verify/:token"
+        "url": "http://localhost:8777/verify/:token"
       }
     ]
   }
