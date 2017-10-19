@@ -9,7 +9,7 @@ const {getStatus} = require('./controller');
  * @apiDescription Get microservice status
  * @apiPermission root
  *
- * @apiSuccess {Number} status HTTP 200 Created
+ * @apiSuccess {Number} status HTTP 200 OK
  * @apiSuccess {Object[]} message  Status message
  *
  * @apiSuccessExample Success-Response
