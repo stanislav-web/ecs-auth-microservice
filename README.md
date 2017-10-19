@@ -25,21 +25,14 @@ Represents high scalable architecture for "NodeJS" applications in the form of b
  - Password encryption
  - JWT authentication
  
-##### DEFAULT (USE MongoDB)
+##### DEFAULT INSTALL (USE MongoDB)
 ```bash
 docker-compose up --build
 ```
 
-##### INSTALL WITH MONGO DB
-
 ```bash
-sh build/mongo.sh 
-```
-
-##### INSTALL WITH REDIS STORAGE
-
-```bash
-sh build/redis.sh
+sh build/mongo.sh # install with MongoDb (default)
+sh build/redis.sh # install with Redis
 ```
 
 ##### CONFIGURATION
@@ -49,7 +42,7 @@ sh build/redis.sh
 
 ##### RUN
 ```bash
-http://localhost:88 # (Nginx 88 => NodeJs 8080)
+http://localhost:88 # (Nginx 88 => NodeJs 8777)
 ```
 
 ##### RUN AS NODE SERVER
